@@ -10,6 +10,7 @@ tile <- substr(args[3],1,6)
 year <- as.numeric(substr(args[3],7,10))
 # tile <- 'h11v09'
 # year <- 2019
+#
 
 tile = 'h10v03'
 year = c(2019, 2020, 2021)
