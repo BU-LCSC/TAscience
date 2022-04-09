@@ -17,7 +17,7 @@ print(args)
 tile <- substr(args[3],1,6)
 year <- as.numeric(substr(args[3],7,10))
 cc   <- as.numeric(substr(args[3],11,13))
-# tile <- 'h10v03'; year <- 2016; cc <- 50
+# tile <- 'h10v03'; year <- 2003; cc <- 50
 
 
 ###############################
@@ -38,22 +38,23 @@ load(file)
 ##########################################
 numPix <- dim(band1)[1]
 phenYr <- year
-dates <- c(seq(as.Date(0,origin=paste0((phenYr-1),'-1-1')),as.Date(364,origin=paste0((phenYr-1),'-1-1')),by='day'),
-           seq(as.Date(0,origin=paste0((phenYr-0),'-1-1')),as.Date(364,origin=paste0((phenYr-0),'-1-1')),by='day'),
-           seq(as.Date(0,origin=paste0((phenYr+1),'-1-1')),as.Date(364,origin=paste0((phenYr+1),'-1-1')),by='day'))
+# dates <- c(seq(as.Date(0,origin=paste0((phenYr-1),'-1-1')),as.Date(364,origin=paste0((phenYr-1),'-1-1')),by='day'),
+#            seq(as.Date(0,origin=paste0((phenYr-0),'-1-1')),as.Date(364,origin=paste0((phenYr-0),'-1-1')),by='day'),
+#            seq(as.Date(0,origin=paste0((phenYr+1),'-1-1')),as.Date(364,origin=paste0((phenYr+1),'-1-1')),by='day'))
+dates <- as.Date(dates,origin='1970-1-1')
 
 numLyrs <- 24
 pheno_mat <- matrix(NA,numPix,numLyrs)
 
 
 for (i in 1:numPix){
-  red     <- band1[i,]  
-  nir     <- band2[i,]  
-  green   <- band2[i,]  
-  swir    <- band2[i,]  
+  red     <- band1[i,]
+  nir     <- band2[i,]
+  green   <- band2[i,]
+  swir    <- band2[i,]
   snowPix <- bsnow[i,];
   snowPix[is.na(snowPix)] <- 0
-  
+
   pheno_mat[i,] <- DoPhenologyMODIS(red,nir,green,swir,snowPix,dates,phenYr,params,numLyrs)
 
   if(i%%10000==0) print(i)
@@ -80,8 +81,8 @@ if(length(files==200)){
   
   # base image
   imgDir <- paste0(params$setup$dataDir)
-  a41 <- list.files(path=paste0(imgDir,'/mcd43a4_link/',(year-1)),pattern=glob2rx(paste0('*',tile,'*.hdf')),recursive=T,full.names=T)
-  imgBase <- raster(get_subdatasets(a41[1])[[1]])
+  q1 <- list.files(path=paste0(imgDir,'mcd12q/q1/2020.01.01'),pattern=glob2rx(paste0('*',tile,'*.hdf')),recursive=T,full.names=T)
+  imgBase <- raster(get_subdatasets(q1[1])[[1]])
   
   numPix <- length(imgBase)
   numChunks <- params$setup$numChunks

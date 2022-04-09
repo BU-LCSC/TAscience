@@ -32,7 +32,12 @@ imgDir <- paste0(params$setup$dataDir)
 a41 <- list.files(path=paste0(imgDir,'/mcd43a4_link/',(year-1)),pattern=glob2rx(paste0('*',tile,'*.hdf')),recursive=T,full.names=T)
 a42 <- list.files(path=paste0(imgDir,'/mcd43a4_link/',(year-0)),pattern=glob2rx(paste0('*',tile,'*.hdf')),recursive=T,full.names=T)
 a43 <- list.files(path=paste0(imgDir,'/mcd43a4_link/',(year+1)),pattern=glob2rx(paste0('*',tile,'*.hdf')),recursive=T,full.names=T)
+# imgDir <- '/projectnb/modislc/users/mkmoon/LCD_C6/C6_1/e4ftl01.cr.usgs.gov/MOTA'
+# a41 <- list.files(path=paste0(imgDir,'/MCD43A4.006/'),pattern=glob2rx(paste0('MCD43A4.A',(year-1),'*',tile,'*.hdf')),recursive=T,full.names=T)
+# a42 <- list.files(path=paste0(imgDir,'/MCD43A4.006/'),pattern=glob2rx(paste0('MCD43A4.A',(year-0),'*',tile,'*.hdf')),recursive=T,full.names=T)
+# a43 <- list.files(path=paste0(imgDir,'/MCD43A4.006/'),pattern=glob2rx(paste0('MCD43A4.A',(year+1),'*',tile,'*.hdf')),recursive=T,full.names=T)
 a4files  <- c(a41,a42,a43)
+
 
 # base image
 imgBase <- raster(get_subdatasets(a4files[1])[[1]])
@@ -59,6 +64,10 @@ foreach(i=1:length(a4files)) %dopar%{
   a4file <- a4files[i]
   yd <- as.numeric(substr(unlist(strsplit(a4file,'/'))[11],10,16))
   a2file <- list.files(path=paste0(imgDir,'mcd43a2_link/',substr(yd,1,4),'/',substr(yd,5,7)),pattern=glob2rx(paste0('MCD43A2.A',yd,'.',tile,'*.hdf')),full.names=T)
+  # yd <- as.numeric(substr(unlist(strsplit(a4file,'/'))[13],10,16))
+  ymd <- as.Date(as.numeric(substr(yd,5,7)),origin=paste0((as.numeric(substr(yd,1,4))-1),'-12-31'))
+  yymmdd <- gsub('-','.',ymd)
+  # a2file <- list.files(path=paste0(imgDir,'/MCD43A2.006/',yymmdd),pattern=glob2rx(paste0('MCD43A2.A',yd,'.',tile,'*.hdf')),full.names=T)
   
   sds4 <- get_subdatasets(a4file)
   sds2 <- get_subdatasets(a2file)
@@ -85,7 +94,7 @@ foreach(i=1:length(a4files)) %dopar%{
     b6 <- band6[chunks]
     bs <- bsnow[chunks]
     
-    save(b1,b2,b4,b6,bs,yd,file=paste0(dirTemp,'/',yd,'.rda'))
+    save(b1,b2,b4,b6,bs,ymd,file=paste0(dirTemp,'/',yd,'.rda'))
   }
 }
 
@@ -103,27 +112,39 @@ foreach(cc=1:numCk) %dopar%{
     chunks <- c((chunk*(cc-1)+1):(chunk*cc))
   }
   
-  if(length(files)==(365*3)){
-    band1 <- matrix(NA,length(chunks),length(files))
-    band2 <- matrix(NA,length(chunks),length(files))
-    band4 <- matrix(NA,length(chunks),length(files))
-    band6 <- matrix(NA,length(chunks),length(files))
-    bsnow <- matrix(NA,length(chunks),length(files))
-    for(i in 1:length(files)){
+  dates <- c()
+  band1 <- matrix(NA,length(chunks),length(files))
+  band2 <- matrix(NA,length(chunks),length(files))
+  band4 <- matrix(NA,length(chunks),length(files))
+  band6 <- matrix(NA,length(chunks),length(files))
+  bsnow <- matrix(NA,length(chunks),length(files))
+  for(i in 1:length(files)){
       load(files[i])
       
+      dates <- c(dates,ymd)
+    
       band1[,i] <- b1
       band2[,i] <- b2
       band4[,i] <- b4
       band6[,i] <- b6
       bsnow[,i] <- bs
-    }
-    # Save
-    save(band1,band2,band4,band6,bsnow,
-         file=paste0(ckDirY,'/chunk_',ckNum,'.rda'))
   }
+  
+  # Save
+  save(band1,band2,band4,band6,bsnow,dates,
+       file=paste0(ckDirY,'/chunk_',ckNum,'.rda'))
+  
 }
   
+
+
+# ########################################
+# ### Submit jobs for making phenometrics chunks
+# setwd(paste0(params$setup$logDir,'02'))
+# for(cc in 1:params$setup$numChunks){
+#   system(paste('qsub -V -l h_rt=12:00:00 ',params$setup$Script,'run_02_make_phe_chunks.sh ',tile,year,cc,sep=''))
+# }  
+
   
 ########################################
 ## Remove temporary files

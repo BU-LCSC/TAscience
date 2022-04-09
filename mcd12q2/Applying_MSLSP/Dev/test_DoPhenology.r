@@ -1,24 +1,36 @@
-tile <- 'h10v03'; year <- 2016; cc <- 150
+library(sp)
+library(raster)
+library(gdalUtils)
+library(rgdal)
+library(RcppRoll)
+library(rjson)
+
+
+tile <- 'h10v03'; year <- 2001; cc <- 150
+
+load(paste0('/projectnb/modislc/projects/sat/q2_by_mslsp/h10v03/chunks/',year,'/chunk_',sprintf('%03d',cc),'.rda'))
 
 params <- fromJSON(file='/usr3/graduate/mkmoon/GitHub/TAscience/mcd12q2/Applying_MSLSP/Q2_Parameters.json')
 source(params$setup$rFunctions)
 
-load("/projectnb/modislc/projects/sat/q2_by_mslsp/h10v03/chunks/2016/chunk_150.rda")
 
-i=578
+i=587
+
+
 red     <- band1[i,]
 nir     <- band2[i,]
 green   <- band4[i,]
 swir    <- band6[i,]
 snowPix <- bsnow[i,]
 snowPix[is.na(snowPix)] <- 0
+dates <- as.Date(dates,origin='1970-1-1')
 
 pheno_pars <- params$phenology_parameters
 numLyrs <- 24
 phenYr <- year
-dates <- c(seq(as.Date(0,origin=paste0((phenYr-1),'-1-1')),as.Date(364,origin=paste0((phenYr-1),'-1-1')),by='day'),
-           seq(as.Date(0,origin=paste0((phenYr-0),'-1-1')),as.Date(364,origin=paste0((phenYr-0),'-1-1')),by='day'),
-           seq(as.Date(0,origin=paste0((phenYr+1),'-1-1')),as.Date(364,origin=paste0((phenYr+1),'-1-1')),by='day'))
+# dates <- c(seq(as.Date(0,origin=paste0((phenYr-1),'-1-1')),as.Date(364,origin=paste0((phenYr-1),'-1-1')),by='day'),
+#            seq(as.Date(0,origin=paste0((phenYr-0),'-1-1')),as.Date(364,origin=paste0((phenYr-0),'-1-1')),by='day'),
+#            seq(as.Date(0,origin=paste0((phenYr+1),'-1-1')),as.Date(364,origin=paste0((phenYr+1),'-1-1')),by='day'))
 
 
 #---------------------------------------------------------------------
@@ -27,10 +39,10 @@ dates <- c(seq(as.Date(0,origin=paste0((phenYr-1),'-1-1')),as.Date(364,origin=pa
 #Code adapted by Douglas Bolton
 #Based on MODIS C6 algorithm developed by Josh Gray
 #---------------------------------------------------------------------
-DoPhenologyMODIS <- function(red, nir, green, swir, snowPix, dates, phenYr, params, numLyrs){
-  
-  
-  #Despike, calculate dormant value, fill snow with dormant value, despike poorly fit snow values
+
+# DoPhenologyMODIS <- function(red, nir, green, swir, snowPix, dates, phenYr, params, numLyrs){
+# 
+#   #Despike, calculate dormant value, fill snow with dormant value, despike poorly fit snow values
   log <- try({
     
     pheno_pars <- params$phenology_parameters
@@ -50,10 +62,10 @@ DoPhenologyMODIS <- function(red, nir, green, swir, snowPix, dates, phenYr, para
     
     # Snow
     ndsi <- (green - swir) / (green + swir)
-    snowPix[ndsi > -0.2] <- 1
+    snowPix[ndsi > 0] <- 1
     snowPix <- Screen_SnowFills(vi,vi_dorm,snowPix,dates,pheno_pars)            #Screen poorly filled snow values
     
-    vi[snowPix] <- vi_dorm   #Fill remaining snow values with dormant value for vi  
+    vi[snowPix==1] <- vi_dorm   #Fill remaining snow values with dormant value for vi  
     vi[vi < vi_dorm] <- vi_dorm
     
     #Determine gaps that require filling
@@ -79,7 +91,7 @@ DoPhenologyMODIS <- function(red, nir, green, swir, snowPix, dates, phenYr, para
     }
     
     #
-    splineStart <- as.Date(paste0(c(phenYr-2,phenYr-1,phenYr),'-01-01')) - - pheno_pars$splineBuffer
+    splineStart <- as.Date(paste0(c(phenYr-1,phenYr-0,phenYr+1),'-01-01')) - pheno_pars$splineBuffer
     numDaysFit  <-  365 + (pheno_pars$splineBuffer * 2)   
     splineEnd <- splineStart+(numDaysFit-1)
     numYrs <- 3
@@ -212,37 +224,17 @@ DoPhenologyMODIS <- function(red, nir, green, swir, snowPix, dates, phenYr, para
     
     
     #Get metrics that describe the segments and the year
-    
-    #First, get metrics counting gap filled observations as "good" observations
-    seg_metricsFill <- lapply(full_segs, GetSegMetricsLight, daysVec, sort(xs_sub))
-    un <- unlist(seg_metricsFill, use.names=F)
-    ln <- length(un)      
-    gup_maxgap_frac_filled <- un[seq(1, ln, by=2)] * 100
-    gdown_maxgap_frac_filled <- un[seq(2, ln, by=2)] * 100
-    
-    
-    #Second, get segment metrics with snow observations counted as "good" observations
+    #Get the full segment metrics, not counting snow and not counting gap filled
     filled_vi <- fillMat[,y]
-    seg_metricsFill <- lapply(full_segs, GetSegMetricsLight, daysVec, daysVec[!is.na(filled_vi)])
-    un <- unlist(seg_metricsFill, use.names=F)
-    ln <- length(un)      
-    gup_maxgap_frac_count_snow <- un[seq(1, ln, by=2)] * 100
-    gdown_maxgap_frac_count_snow <- un[seq(2, ln, by=2)] * 100
-    
-    #And get calendar year metrics with snow counted as good
-    numObs_count_snow <- sum(!is.na(filled_vi) & inYear)
-    maxGap_annual_count_snow <- max(diff(c( pheno_pars$splineBuffer+1, daysVec[!is.na(filled_vi) & inYear], 365+pheno_pars$splineBuffer))) 
-    
-    
-    #Now get the full segment metrics, not counting snow and not counting gap filled
     filled_vi[baseWeights[,y] < 1] <- NA    #If weight is less than 1, implies it is a snow-fill, and we don't want to count snow-filled as a valid observation. So set to NA.
     numObs <- sum(!is.na(filled_vi) & inYear)   #Number of observations in year
-    maxGap_annual <- max(diff(c( pheno_pars$splineBuffer+1, daysVec[!is.na(filled_vi) & inYear], 365+pheno_pars$splineBuffer)))  #Max gap (in days) during year
-    seg_metrics <- lapply(full_segs, GetSegMetrics, smoothed_vi, filled_vi[!is.na(filled_vi)], pred_dates, pred_dates[!is.na(filled_vi)]) #full segment metrics
     
     
     #Unlist and scale the seg metrics
+    seg_metrics <- lapply(full_segs, GetSegMetrics, smoothed_vi, filled_vi[!is.na(filled_vi)], pred_dates, pred_dates[!is.na(filled_vi)]) #full segment metrics
     un <- unlist(seg_metrics, use.names=F)
+    if(sum(is.na(un))==9){outAll <- c(outAll,c(NA,rep(NA,10),4,rep(NA,10),4,NA));next}
+    
     ln <- length(un)
     seg_amp <- un[seq(1, ln, by=9)] * 10000
     seg_max <- un[seq(2, ln, by=9)] * 10000
@@ -273,7 +265,6 @@ DoPhenologyMODIS <- function(red, nir, green, swir, snowPix, dates, phenYr, para
       qual_1 <- GetQAs(gup_rsq, gdown_rsq, gup_maxgap, gdown_maxgap, theOrd, qa_pars)[[1]][1]
       qual_2 <- GetQAs(gup_rsq, gdown_rsq, gup_maxgap, gdown_maxgap, theOrd, qa_pars)[[2]][1]
     } 
-    
     
     
     ################################################
@@ -311,10 +302,14 @@ DoPhenologyMODIS <- function(red, nir, green, swir, snowPix, dates, phenYr, para
     outAll <- out
   }
   
-  return(outAll)
-  
-}
+#   return(outAll)
+# 
+# }
 
 
-
+plot(pred_dates,smoothed_vi,ylim=c(-0.2,0.8))
+points(dates,vi,col='red',cex=1.5)
+VI   <- 2.5*(nir - red) / (nir + 2.4*red + 1)
+points(dates,VI)
+abline(v=outAll[c(2:8)],lty=5)
 
