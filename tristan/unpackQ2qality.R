@@ -43,3 +43,5 @@ i = 5
 
 qaGup <- setValues(imgBase,qaVals[,1])
 plot(qaGup,colNA='grey30')
+
+sum(values(qaGup)==0,na.rm=T)/length(nonNA)*100
