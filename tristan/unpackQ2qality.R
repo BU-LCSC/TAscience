@@ -19,8 +19,11 @@ imgBase <- raster(get_subdatasets(q1[1])[[1]])
 files <- list.files('/projectnb/modislc/projects/sat/data/mcd12q/q2',pattern=glob2rx('*h10v03*.hdf'),full.names = T,recursive = T)
 
 # loop for years
-qaVals <- matrix(NA,length(imgBase),7)
-for(i in 1:19){
+# for(i in 1:19){
+  
+i = 5
+
+  qaVals <- matrix(NA,length(imgBase),7)
   # get QA layer
   sds <- get_subdatasets(files[i])
   qa <- raster(sds[13])
@@ -35,7 +38,8 @@ for(i in 1:19){
     qaVals[nonNA[j],] <- UnpackDetailedQA(qaV[nonNA[j]])  
     if(j%%100000==0) print(j)
   }
-}
+  
+# }
 
 qaGup <- setValues(imgBase,qaVals[,1])
 plot(qaGup,colNA='grey30')
