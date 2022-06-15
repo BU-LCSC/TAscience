@@ -409,26 +409,29 @@ library(RColorBrewer)
 q1 <- list.files(path='/projectnb/modislc/projects/sat/data/mcd12q/q1/2020.01.01',pattern=glob2rx(paste0('*h10v03*.hdf')),recursive=T,full.names=T)
 imgBase <- raster(get_subdatasets(q1[1])[[1]])
 
-Phen1 <- matrix(NA,length(imgBase),19)
-Phen2 <- matrix(NA,length(imgBase),19)
+Phen1 <- matrix(NA,length(imgBase),20)
+Phen2 <- matrix(NA,length(imgBase),20)
 
 files1 <- list.files('/projectnb/modislc/projects/sat/data/mcd12q/q2',pattern=glob2rx('*h10v03*.hdf'),full.names = T,recursive = T)
 files2 <- list.files('/projectnb/modislc/projects/sat/q2_by_mslsp/h10v03/metrics',pattern=glob2rx(paste0('0',3,'*.tif')),full.names = T,recursive = T)
 
+files2 <- list.files('/projectnb/modislc/projects/sat/q2_by_mslsp/h10v03/metrics',pattern=glob2rx(paste0(24,'*.tif')),full.names = T,recursive = T)
+
 yy <- 1
-for(yy in 1:19){
-  doy_offset <- as.integer(as.Date(paste((2000+yy), "-1-1", sep="")) - as.Date("1970-1-1"))
+for(yy in 1:20){
+  # doy_offset <- as.integer(as.Date(paste((2000+yy), "-1-1", sep="")) - as.Date("1970-1-1"))
   
-  sds <- get_subdatasets(files1[yy])
-  phen1 <- raster(sds[3])
-  phen1[phen1>32000] <- NA
-  phen1 <- phen1-doy_offset
+  # sds <- get_subdatasets(files1[yy])
+  # phen1 <- raster(sds[3])
+  # phen1[phen1>32000] <- NA
+  # phen1 <- phen1-doy_offset
   
   phen2 <- raster(files2[yy])
   phen2[phen2>32000] <- NA
-  phen2 <- phen2-doy_offset
+  # phen2 <- phen2-doy_offset
+  phen2 <- phen2
   
-  Phen1[,yy] <- values(phen1)
+  # Phen1[,yy] <- values(phen1)
   Phen2[,yy] <- values(phen2)
   
   print(yy)
@@ -482,5 +485,7 @@ hist(Ltm2d,breaks=seq(-500,500,3),xlim=c(-50,20),add=T,col='red')
 plot(Phen1[1,],ylim=c(50,250))
 points(Phen2[1,],col='red')
 
-
+plot(Ltm2,colNA='grey45',
+     box=F,
+     main='Number of NBAR obs.',cex.main=1.5)
 
