@@ -320,6 +320,8 @@ for(cc in 1:9){
 
 
 #
+library(TeachingDemos)
+
 png(filename=paste0('ts_all.png'),width=10,height=8,units='in',res=300)
 
 par(mfrow=c(3,3),oma=c(1,1,0,0),mar=c(4,4,1,1),mgp=c(2.5,1,0))

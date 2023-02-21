@@ -18,7 +18,7 @@ for(i in 8:14){
 ###############################
 # Save metrics
 setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
-for(tt in c(1:98)){
+for(tt in 1:98){
   for(mm in 1:25){
     tile <- sprintf('%03d',tt)
     system(paste('qsub -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_001.sh ',tile,mm,sep=''))  
@@ -50,7 +50,7 @@ for(tt in 1:98){
 # Calculate PC and Cluster
 setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
 # system(paste('qsub -V -pe omp 8 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_003.sh ')) 
-for(tt in 1:315){
+for(tt in 1:98){
   system(paste('qsub -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_003.sh ',tt,sep=''))      
 }
 
@@ -114,3 +114,13 @@ setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
 for(cc in 1:9){
   system(paste('qsub -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_006.sh ',cc,sep=''))      
 }
+
+
+## Get change values for each cluster
+setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
+for(tt in 1:315){
+  system(paste('qsub -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_008.sh ',tt,sep=''))      
+}
+
+
+

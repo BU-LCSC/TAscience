@@ -21,9 +21,8 @@ mcd12q2_path <- '/projectnb/modislc/projects/sat/data/mcd12q/q2/c61'
 file <- list.files(path=paste0(mcd12q2_path,'/2001'),full.names=T)
 tile_list <- substr(file,74,79)
 
-imgBase <- raster(unlist(gdal_subdatasets(file[tt]))[10])
-
 # Northern hemisphere tiles
+file <- file[which(as.numeric(substr(tile_list,5,6))<6)]
 tile_list <- tile_list[which(as.numeric(substr(tile_list,5,6))<6)]
 
 # # North America tiles
@@ -37,6 +36,9 @@ tile_list <- tile_list[which(as.numeric(substr(tile_list,5,6))<6)]
 #                'h06v03', 'h07v03', 'h07v05', 'h07v06', 'h07v07', 
 #                'h08v03', 'h08v04', 'h08v05', 'h08v06', 'h08v07', 
 #                'h09v02', 'h09v03', 'h09v04', 'h09v05', 'h09v06', 'h09v07', 'h09v08')
+
+
+imgBase <- raster(unlist(gdal_subdatasets(file[tt]))[10])
 
 
 ############################################################
@@ -65,8 +67,10 @@ for(i in 1:(2400*2400)){
 lct_ch <- setValues(lct,lct_ch)
 rm(mat_lct)
 
-slct <- which(values(lct)!=4 & values(lct)!=5 & values(lct)!=8) # non-Forests
-
+# Deciduous Tree cover: IGBP 3,4,5,8,9
+# Shrub               : IGBP 6,7,10
+# slct <- which(values(lct)!=3 & values(lct)!=4 & values(lct)!=5 & values(lct)!=6 & values(lct)!=7 & values(lct)!=8 & values(lct)!=9 & values(lct)!=10) # vegetation 
+# slct <- which(values(lct)!=3 & values(lct)!=4 & values(lct)!=5 & values(lct)!=8 & values(lct)!=9) # DTC
 
 
 ############################################################
@@ -95,8 +99,10 @@ caseNC <- caseNC[-caseCP]
 
 datOrg[caseNC,] <- NA
 datNor[caseNC,] <- NA
-datOrg[slct,] <- NA
-datNor[slct,] <- NA
+# datOrg[slct,] <- NA
+# datNor[slct,] <- NA
+# datOrg[values(lct_ch)==0,] <- NA
+# datNor[values(lct_ch)==0,] <- NA
 
 valRow <- cbind(rep(tt,sum(!is.na(datOrg[,1]))),which(!is.na(datOrg[,1]))) # for save
 
