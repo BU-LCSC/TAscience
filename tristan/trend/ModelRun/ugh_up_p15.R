@@ -49,7 +49,7 @@ extenthalfm <- c(halfx23,halfx2, lct@extent@ymin, halfy)
 extenthalfn <- c(halfx2,halfx22, lct@extent@ymin, halfy)
 extenthalfo <- c(halfx22,lct@extent@xmax, lct@extent@ymin, halfy)
 
-lct <- crop(lct, extenthalf)
+lct <- crop(lct, extenthalfn)
 
 mat_lct <- matrix(NA,length(lct),1)
 mat_gsl <- matrix(NA,length(lct),1)
@@ -66,7 +66,6 @@ mat_eviarea <- matrix(NA,length(lct),1)
 
 mat_lct[,1] <- values(lct)
 
-mat_lct[mat_lct == 5] <- 4
 mat_lct[mat_lct == 17] <- NA
 
 doy_offset <- as.integer(as.Date(paste((year-1),'-12-31',sep='')) - as.Date("1970-1-1"))
@@ -209,7 +208,9 @@ for(i in 1:length(lct)){
     CTA[,f] <- mat_cta[z33[[1]][f],]
   }
   LCTa[LCTa != 4 & LCTa != 5] <- NA
-  
+  LCTdf <- as.data.frame(LCTa)
+  LCTdf[!complete.cases(LCTdf),] <- NA
+  LCTa <- as.matrix(LCTdf)
   GUP[is.na(LCTa)] <- NA
   GDW[is.na(LCTa)] <- NA
   gsl[is.na(LCTa)] <- NA
@@ -280,19 +281,19 @@ mswn <- setValues(lct, mat_swna)
 mvpf <- setValues(lct, mat_vpfa)
 mcta <- setValues(lct, mat_ctaa)
 
-mgsl[lct != 4 & lct !=5] <- NA
-mgdw[lct != 4 & lct !=5] <- NA
-mgup[lct != 4 & lct !=5] <- NA
-m15u[lct != 4 & lct !=5] <- NA
-m15d[lct != 4 & lct !=5] <- NA
-mamp[lct != 4 & lct !=5] <- NA
-mmax[lct != 4 & lct !=5] <- NA
-mare[lct != 4 & lct !=5] <- NA
-mpeak[lct != 4 & lct !=5] <- NA
-mtmc[lct != 4 & lct !=5] <- NA
-mswn[lct != 4 & lct !=5] <- NA
-mvpf[lct != 4 & lct !=5] <- NA
-mcta[lct != 4 & lct !=5] <- NA
+# mgsl[lct != 4 & lct !=5] <- NA
+# mgdw[lct != 4 & lct !=5] <- NA
+# mgup[lct != 4 & lct !=5] <- NA
+# m15u[lct != 4 & lct !=5] <- NA
+# m15d[lct != 4 & lct !=5] <- NA
+# mamp[lct != 4 & lct !=5] <- NA
+# mmax[lct != 4 & lct !=5] <- NA
+# mare[lct != 4 & lct !=5] <- NA
+# mpeak[lct != 4 & lct !=5] <- NA
+# mtmc[lct != 4 & lct !=5] <- NA
+# mswn[lct != 4 & lct !=5] <- NA
+# mvpf[lct != 4 & lct !=5] <- NA
+# mcta[lct != 4 & lct !=5] <- NA
 
 vgsl <- values(mgsl)
 vgdw <- values(mgdw)
@@ -324,7 +325,7 @@ GPPfold <- '/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/
 foldercheck <- paste0(GPPfold,tile,'/',year)
 if(!dir.exists(foldercheck)){dir.create(foldercheck)}
 
-saveRDS(rGPP_maxp, file = paste0(foldercheck,'/GPPmax_',year,'c1.rds'))
-saveRDS(rGPP_GSLp, file = paste0(foldercheck,'/GPPgsl_',year,'c1.rds'))
-saveRDS(rGPPp, file = paste0(foldercheck,'/GPP_',year,'c1.rds'))
+saveRDS(rGPP_maxp, file = paste0(foldercheck,'/GPPmax_',year,'c15.rds'))
+saveRDS(rGPP_GSLp, file = paste0(foldercheck,'/GPPgsl_',year,'c15.rds'))
+saveRDS(rGPPp, file = paste0(foldercheck,'/GPP_',year,'c15.rds'))
 
