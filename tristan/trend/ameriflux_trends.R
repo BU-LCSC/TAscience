@@ -12,67 +12,67 @@ canfilt <- canadianpro[as.character(canadianpro$PRFABBR) %in% nest1,]
 
 plot(usfilt)
 plot(canfilt, add=T)
-Max1 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2001/GPP2001.rds')
+Max1 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2001/GPP_2001.rds')
 # fMax1 <- crop(Max1, usfilt)
 
-Max2 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2002/GPP2002.rds')
+Max2 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2002/GPP_2002.rds')
 # fMax2 <- crop(Max2, usfilt)
 
-Max3 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2003/GPP2003.rds')
+Max3 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2003/GPP_2003.rds')
 # fMax3 <- crop(Max3, usfilt)
 
-Max4 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2004/GPP2004.rds')
+Max4 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2004/GPP_2004.rds')
 # fMax4 <- crop(Max4, usfilt)
 
-Max5 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2005/GPP2005.rds')
+Max5 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2005/GPP_2005.rds')
 # fMax5 <- crop(Max5, usfilt)
 
-Max6 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2006/GPP2006.rds')
+Max6 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2006/GPP_2006.rds')
 # fMax6 <- crop(Max6, usfilt)
 
-Max7 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2007/GPP2007.rds')
+Max7 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2007/GPP_2007.rds')
 # fMax7 <- crop(Max7, usfilt)
 
-Max8 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2008/GPP2008.rds')
+Max8 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2008/GPP_2008.rds')
 # fMax8 <- crop(Max8, usfilt)
 
-Max9 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2009/GPP2009.rds')
+Max9 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2009/GPP_2009.rds')
 # fMax9 <- crop(Max9, usfilt)
 
-Max10 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2010/GPP2010.rds')
+Max10 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2010/GPP_2010.rds')
 # fMax10 <- crop(Max10, usfilt)
 
-Max11 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2011/GPP2011.rds')
+Max11 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2011/GPP_2011.rds')
 # fMax11 <- crop(Max11, usfilt)
 
-Max12 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2012/GPP2012.rds')
+Max12 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2012/GPP_2012.rds')
 # fMax12 <- crop(Max12, usfilt)
 
-Max13 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2013/GPP2013.rds')
+Max13 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2013/GPP_2013.rds')
 # fMax13 <- crop(Max13, usfilt)
 
-Max14 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2014/GPP2014.rds')
+Max14 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2014/GPP_2014.rds')
 # fMax14 <- crop(Max14, usfilt)
 
-Max15 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2015/GPP2015.rds')
+Max15 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2015/GPP_2015.rds')
 # fMax15 <- crop(Max15, usfilt)
 
-Max16 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2016/GPP2016.rds')
+Max16 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2016/GPP_2016.rds')
 # fMax16 <- crop(Max16, usfilt)
 
-Max17 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2017/GPP2017.rds')
+Max17 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2017/GPP_2017.rds')
 # fMax17 <- crop(Max17, usfilt)
 
-Max18 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2018/GPP2018.rds')
+Max18 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2018/GPP_2018.rds')
 # fMax18 <- crop(Max18, usfilt)
 
-Max19 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2019/GPP2019.rds')
+Max19 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2019/GPP_2019.rds')
 # fMax19 <- crop(Max19, usfilt)
 
-Max20 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2020/GPP2020.rds')
+Max20 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2020/GPP_2020.rds')
 # fMax20 <- crop(Max20, usfilt)
 
-Max21 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars/h13v04/2021/GPP2021.rds')
+Max21 <- readRDS('/projectnb/modislc/users/twgreen/MODISProject/RData/spatial/Rast_v4/GPP_vars3/h12v04/2021/GPP_2021.rds')
 # fMax21 <- crop(Max21, usfilt)
 
 

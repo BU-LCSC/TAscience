@@ -66,7 +66,7 @@ mat_eviarea <- matrix(NA,length(lct),1)
 
 mat_lct[,1] <- values(lct)
 
-#mat_lct[mat_lct == 5] <- 4
+# mat_lct[mat_lct == 5] <- 4
 mat_lct[mat_lct == 17] <- NA
 
 doy_offset <- as.integer(as.Date(paste((year-1),'-12-31',sep='')) - as.Date("1970-1-1"))

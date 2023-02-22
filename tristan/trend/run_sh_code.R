@@ -24,19 +24,19 @@ for(i in 1:length(tiles)){
 #      }  
 # }
 # 
-# setwd('/projectnb/modislc/users/twgreen/MODISProject/runEnd/')
-# for(i in 1:length(tiles)){
-#   for(year in 2003:2021){
-#     system(paste('qsub -N DaG',tiles[i],' -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/twgreen/R_Scripts/run_ugh_up.sh ', tiles[i],year,sep=''))
-#   }  
-# }
+setwd('/projectnb/modislc/users/twgreen/MODISProject/runEnd/')
+for(i in 1:length(tiles)){
+  for(year in 2001:2021){
+    system(paste('qsub -N DaG',tiles[i],' -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/twgreen/Github/TAscience/tristan/trend/ModelRun/run_spatial.sh ', tiles[i],year,sep=''))
+  }
+}
 
 
 setwd('/projectnb/modislc/users/twgreen/MODISProject/runEnd/')
 for(i in 1:length(tiles)){
   for(year in 2001:2021){
     system(paste('qsub -N MP1',tiles[i],' -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/twgreen/Github/TAscience/tristan/trend/ModelRun/run_amergppDM_p1.sh ', tiles[i],year,sep=''))
-    system(paste('qsub -N MP2',tiles[i],' -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/twgreen.Github/TAscience/tristan/trend/ModelRun/run_amergppDM_p2.sh ', tiles[i],year,sep=''))
+    system(paste('qsub -N MP2',tiles[i],' -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/twgreen/Github/TAscience/tristan/trend/ModelRun/run_amergppDM_p2.sh ', tiles[i],year,sep=''))
     system(paste('qsub -N MP3',tiles[i],' -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/twgreen/Github/TAscience/tristan/trend/ModelRun/run_amergppDM_p3.sh ', tiles[i],year,sep=''))
     system(paste('qsub -N MP4',tiles[i],' -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/twgreen/Github/TAscience/tristan/trend/ModelRun/run_amergppDM_p4.sh ', tiles[i],year,sep=''))
     system(paste('qsub -N MP5',tiles[i],' -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/twgreen/Github/TAscience/tristan/trend/ModelRun/run_amergppDM_p5.sh ', tiles[i],year,sep=''))
