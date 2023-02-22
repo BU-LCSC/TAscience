@@ -46,6 +46,9 @@ ggplot(dfpra, aes(x=GPP_Max, y=GPP_Maxp)) + geom_point()  + stat_ma_line(method=
 
 ggplot(dfpra, aes(x=GPP, y=GPPp)) + geom_point()  + stat_ma_line(method = 'SMA') + geom_abline(slope=1, intercept=0) +
   stat_ma_eq(use_label(c('eq','R2','P')), method='SMA') + xlim(100,2500) + ylim(100,2500)+ xlab('Site Annual GPP (gC m-2 y-1)') + ylab('DayMet Annual GPP (gC m-2 y-1)') + theme_classic() 
+
+
+
 dev.off()
 
 comb <- merge(dfpr, prel, by=c('sitenm','Year'))
@@ -114,7 +117,14 @@ ggplot(filtenvdfa, aes(x=Max_an, y=GPP_Maxanp)) + geom_point()  + stat_poly_line
   stat_poly_eq()+ xlab('Site GPP Max Anomaly') + ylab('Model GPP Max Anomaly') + xlim(-7,7) + ylim(-7,7) + theme_classic() 
 
 ggplot(filtenvdfa, aes(x=GPP_an, y=GPP_anp)) + geom_point()  + stat_poly_line() + geom_abline(slope=1, intercept=0) +
-  stat_poly_eq()+ xlab('Site Annual GPP Model Anomaly') + ylab('Model Annual GPP Anomaly') + xlim(-700,700) + ylim(-700,700) + theme_classic() 
+  stat_poly_eq()+ xlab('Site Annual GPP  Anomaly') + ylab('Model Annual GPP Anomaly') + xlim(-700,700) + ylim(-700,700) + theme_classic() 
+
+ggplot(filtenvdfa, aes(x=GPP_Maxanp, y=GPP_anp)) + geom_point()  + stat_poly_line() +
+  stat_poly_eq()+ xlab('Model Annual GPP  Anomaly') + ylab('Model Annual GPP Anomaly')  + theme_classic() 
+
+ggplot(filtenvdfa, aes(x=GPP_GSLanp, y=GPP_anp)) + geom_point()  + stat_poly_line() +
+  stat_poly_eq()+ xlab('Model GPP Max Anomaly') + ylab('Model Annual GPP Anomaly')  + theme_classic() 
+
 dev.off()
 
 
