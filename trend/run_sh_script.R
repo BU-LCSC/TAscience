@@ -16,23 +16,16 @@ for(i in 8:14){
 
 
 ###############################
-# Save metrics
+# Save metrics, calculate changes, and save them as rasters
 setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
-for(tt in 251:315){
+for(tt in 201:315){
   for(mm in 1:25){
     tile <- sprintf('%03d',tt)
-    system(paste('qsub -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_001.sh ',tile,mm,sep=''))  
+    system(paste('qsub -V -pe omp 1 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_001.sh ',tile,mm,sep=''))  
   }
 }
 
-# # 10 by 10
-# setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
-# for(tt in c(1:315)){
-#   for(mm in 1:25){
-#     tile <- sprintf('%03d',tt)
-#     system(paste('qsub -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_001_10by10.sh ',tile,mm,sep=''))  
-#   }
-# }
+
 
 
 ###############################

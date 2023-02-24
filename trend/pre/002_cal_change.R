@@ -174,87 +174,87 @@ tt <- as.numeric(substr(args[3],1,3))
 
 
 
-############################################################
-vv <- c(1:25)
-
-outDir <- paste0('/projectnb/modislc/users/mkmoon/TAscience/trend/data/rasters/filt_21yrs_nor_qc/res_cor/',sprintf('%02d',vv[tt]))
-files  <- list.files(outDir,pattern=glob2rx('1_chg_org*.tif'),full.names=T)
-  
-print(length(files))
-
-rlist <- vector('list',length(files))
-for(i in 1:length(files)){
-  rlist[[i]]<- rast(files[i])
-}
-rsrc <- sprc(rlist)
-rMerge <- merge(rsrc)
-
-print(rMerge)
-
-rs <- disagg(rMerge,10,method='bilinear')
-
-print(rs)
-
-ds <- density(na.omit(values(rMerge)))
-  
-outDir <- paste0('/projectnb/modislc/users/mkmoon/TAscience/trend/data/rasters/filt_21yrs_nor_qc/merge')
-if (!dir.exists(outDir)) {dir.create(outDir)}
-writeRaster(rs,filename=paste0(outDir,'/merge_',sprintf('%02d',vv[tt]),'.tif'),overwrite=TRUE)
-save(ds,file=paste0(outDir,'/merge_dnt_',sprintf('%02d',vv[tt]),'.rda'))
-
-
 # ############################################################
-# shp <- vect('/projectnb/modislc/users/mkmoon/TAscience/trend/data/shp/world-administrative-boundaries_edited.shp')
+# vv <- c(1:25)
 # 
-# setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/figures/')
-# png(filename=paste0('map_val_org_all_1.png'),width=13,height=8,units='in',res=300)
+# outDir <- paste0('/projectnb/modislc/users/mkmoon/TAscience/trend/data/rasters/filt_21yrs_nor_qc/res_cor/',sprintf('%02d',vv[tt]))
+# files  <- list.files(outDir,pattern=glob2rx('1_chg_org*.tif'),full.names=T)
+#   
+# print(length(files))
 # 
-# # MGU
-# mycol <- rev(brewer.pal(11,'PiYG'))
-# Pal   <- colorRampPalette(mycol)
-# mycol <- Pal(300)
+# rlist <- vector('list',length(files))
+# for(i in 1:length(files)){
+#   rlist[[i]]<- rast(files[i])
+# }
+# rsrc <- sprc(rlist)
+# rMerge <- merge(rsrc)
 # 
-# par(fig=c(0,0.5,0.66,1),oma=c(0,0,0,0),mar=c(0,0,0,0),mgp=c(0,0,0))
-# plot(1,xlim=c(-180,180),ylim=c(-55,83),type='n',bty='n',axes=F)
-# plot(shp,col='grey75',axes=F,add=T)
-# plot(rstack[[1]],add=T,col=mycol,axes=F,range=c(-15,15),
-#      plg = list(ext = c(-30, 120, -47, -43), loc = "bottom", cex=1.2,
-#                 at = seq(-15,15,7.5),bty="n", 
-#                 labels = c('<-15',-7.5,0,7.5,'> 15'),tck=2,
-#                 cex.lab=1.2))
-# plot(shp,add=T)
-# box()
-# par(fig=c(0,0.14,0.68,0.83),oma=c(0,0,1,1),mar=c(0,0,1,1),mgp=c(1.5,0.5,0),new=T)
-# rect(par("usr")[1], par("usr")[3],par("usr")[2], par("usr")[4],col='white',border=NA)
-# par(fig=c(0,0.16,0.68,0.88),oma=c(0,0,1,1),mar=c(3,1,1,1),mgp=c(1.5,0.5,0),new=T)
-# plot(dstack[[1]]$x,dstack[[1]]$y,xlim=c(-20,20),type='l',axes=F,lwd=2,xlab="Days",cex.lab=1.2)
-# axis(1,c(-20,-10,0,10,20))
-# abline(v=0,lty=5)
+# print(rMerge)
 # 
+# rs <- disagg(rMerge,10,method='bilinear')
 # 
-# # MGD
-# mycol <- brewer.pal(11,'PiYG')
-# Pal   <- colorRampPalette(mycol)
-# mycol <- Pal(300)
+# print(rs)
 # 
-# par(fig=c(0,0.5,0.33,0.66),oma=c(0,0,0,0),mar=c(0,0,0,0),mgp=c(0,0,0))
-# plot(1,xlim=c(-180,180),ylim=c(-55,83),type='n',bty='n',axes=F)
-# plot(shp,col='grey75',axes=F,add=T)
-# plot(r1,add=T,col=mycol,axes=F,range=c(-15,15),
-#      plg = list(ext = c(-30, 120, -47, -43), loc = "bottom", cex=1.2,
-#                 at = seq(-15,15,7.5),bty="n", 
-#                 labels = c('<-15',-7.5,0,7.5,'> 15'),tck=2,
-#                 cex.lab=1.2))
-# plot(shp,add=T)
-# box()
-# par(fig=c(0,0.14,0.35,0.50),oma=c(0,0,1,1),mar=c(0,0,1,1),mgp=c(1.5,0.5,0),new=T)
-# rect(par("usr")[1], par("usr")[3],par("usr")[2], par("usr")[4],col='white',border=NA)
-# par(fig=c(0,0.16,0.35,0.55),oma=c(0,0,1,1),mar=c(3,1,1,1),mgp=c(1.5,0.5,0),new=T)
-# plot(den$x,den$y,xlim=c(-20,20),type='l',axes=F,lwd=2,xlab="Days",cex.lab=1.2)
-# axis(1,c(-20,-10,0,10,20))
-# abline(v=0,lty=5)
-# 
-# 
-# 
-# dev.off()
+# ds <- density(na.omit(values(rMerge)))
+#   
+# outDir <- paste0('/projectnb/modislc/users/mkmoon/TAscience/trend/data/rasters/filt_21yrs_nor_qc/merge')
+# if (!dir.exists(outDir)) {dir.create(outDir)}
+# writeRaster(rs,filename=paste0(outDir,'/merge_',sprintf('%02d',vv[tt]),'.tif'),overwrite=TRUE)
+# save(ds,file=paste0(outDir,'/merge_dnt_',sprintf('%02d',vv[tt]),'.rda'))
+
+
+############################################################
+shp <- vect('/projectnb/modislc/users/mkmoon/TAscience/trend/data/shp/world-administrative-boundaries_edited.shp')
+
+setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/figures/')
+png(filename=paste0('map_val_org_all_1.png'),width=13,height=8,units='in',res=300)
+
+# MGU
+mycol <- rev(brewer.pal(11,'PiYG'))
+Pal   <- colorRampPalette(mycol)
+mycol <- Pal(300)
+
+par(fig=c(0,0.5,0.66,1),oma=c(0,0,0,0),mar=c(0,0,0,0),mgp=c(0,0,0))
+plot(1,xlim=c(-180,180),ylim=c(-55,83),type='n',bty='n',axes=F)
+plot(shp,col='grey75',axes=F,add=T)
+plot(rstack[[1]],add=T,col=mycol,axes=F,range=c(-15,15),
+     plg = list(ext = c(-30, 120, -47, -43), loc = "bottom", cex=1.2,
+                at = seq(-15,15,7.5),bty="n",
+                labels = c('<-15',-7.5,0,7.5,'> 15'),tck=2,
+                cex.lab=1.2))
+plot(shp,add=T)
+box()
+par(fig=c(0,0.14,0.68,0.83),oma=c(0,0,1,1),mar=c(0,0,1,1),mgp=c(1.5,0.5,0),new=T)
+rect(par("usr")[1], par("usr")[3],par("usr")[2], par("usr")[4],col='white',border=NA)
+par(fig=c(0,0.16,0.68,0.88),oma=c(0,0,1,1),mar=c(3,1,1,1),mgp=c(1.5,0.5,0),new=T)
+plot(dstack[[1]]$x,dstack[[1]]$y,xlim=c(-20,20),type='l',axes=F,lwd=2,xlab="Days",cex.lab=1.2)
+axis(1,c(-20,-10,0,10,20))
+abline(v=0,lty=5)
+
+
+# MGD
+mycol <- brewer.pal(11,'PiYG')
+Pal   <- colorRampPalette(mycol)
+mycol <- Pal(300)
+
+par(fig=c(0,0.5,0.33,0.66),oma=c(0,0,0,0),mar=c(0,0,0,0),mgp=c(0,0,0))
+plot(1,xlim=c(-180,180),ylim=c(-55,83),type='n',bty='n',axes=F)
+plot(shp,col='grey75',axes=F,add=T)
+plot(r1,add=T,col=mycol,axes=F,range=c(-15,15),
+     plg = list(ext = c(-30, 120, -47, -43), loc = "bottom", cex=1.2,
+                at = seq(-15,15,7.5),bty="n",
+                labels = c('<-15',-7.5,0,7.5,'> 15'),tck=2,
+                cex.lab=1.2))
+plot(shp,add=T)
+box()
+par(fig=c(0,0.14,0.35,0.50),oma=c(0,0,1,1),mar=c(0,0,1,1),mgp=c(1.5,0.5,0),new=T)
+rect(par("usr")[1], par("usr")[3],par("usr")[2], par("usr")[4],col='white',border=NA)
+par(fig=c(0,0.16,0.35,0.55),oma=c(0,0,1,1),mar=c(3,1,1,1),mgp=c(1.5,0.5,0),new=T)
+plot(den$x,den$y,xlim=c(-20,20),type='l',axes=F,lwd=2,xlab="Days",cex.lab=1.2)
+axis(1,c(-20,-10,0,10,20))
+abline(v=0,lty=5)
+
+
+
+dev.off()
   
