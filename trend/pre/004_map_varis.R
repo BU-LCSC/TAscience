@@ -1,8 +1,6 @@
 rm(list = ls())
 
-library(gdalUtils)
-library(sp)
-library(raster)
+library(terra)
 
 library(doMC)
 library(doParallel)
@@ -58,17 +56,17 @@ print(vv[ii])
 # ii <- 2
 
 files <- list.files(paste0(path,'/',sprintf('%02d',vv[ii])),pattern=glob2rx('*org*.tif'),full.names=T)
-rast <- raster(files[1])
-shp <- shapefile('/projectnb/modislc/users/mkmoon/TAscience/trend/data/shp/world-administrative-boundaries_edited.shp')
-shp <- spTransform(shp,crs(rast))
-shp <- crop(shp,extent(-15000000,17000000,-6500000,8500000))
+rast <- rast(files[1])
+shp <- vect('/projectnb/modislc/users/mkmoon/TAscience/trend/data/shp/world-administrative-boundaries_edited.shp')
+shp <- project(shp,crs(rast))
+shp <- crop(shp,ext(-15000000,17000000,-6500000,8500000))
 
 
 setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/figures/')
 png(filename=paste0('map_val_org_',sprintf('%02d',vv[ii]),'.png'),width=9.2,height=4.2,units='in',res=300)
 
 par(fig=c(0,1,0,1),oma=c(0,0,0,0),mar=c(0,0,0,0),mgp=c(0,0,0),bty='n')
-plot(shp,col='grey75')
+plot(shp,col='grey75',axes=F)
 # dev.off()
 # par(fig=c(0.4,0.8,0,0.13),oma=c(1,2,1,1),mar=c(3,1,1,1),mgp=c(1.5,0.5,0),new=T)
 # rect(par("usr")[1], par("usr")[3],par("usr")[2], par("usr")[4],col='white',border=NA)
@@ -83,7 +81,7 @@ mycol <- Pal(300)
 
 # foreach(j=1:10) %dopar% {
 for(j in 1:315){
-  rast <- raster(files[j])
+  rast <- rast(files[j])
   if(vv[ii]==2|vv[ii]==6|vv[ii]==9){
     rast[rast < -15] <- -15
     rast[rast >  15] <-  15

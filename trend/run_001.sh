@@ -1,6 +1,6 @@
 #!/bin/bash
 
 echo Submitting $1
-R --vanilla < /usr3/graduate/mkmoon/GitHub/TAscience/trend/001_metrics.R $1
+R --vanilla < /usr3/graduate/mkmoon/GitHub/TAscience/trend/001_metrics_1.R $1
 
 
