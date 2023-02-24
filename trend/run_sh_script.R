@@ -18,7 +18,7 @@ for(i in 8:14){
 ###############################
 # Save metrics
 setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
-for(tt in 1:98){
+for(tt in 251:315){
   for(mm in 1:25){
     tile <- sprintf('%03d',tt)
     system(paste('qsub -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_001.sh ',tile,mm,sep=''))  
@@ -38,11 +38,18 @@ for(tt in 1:98){
 ###############################
 # Save change as rasters
 setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
-for(tt in 1:98){
+for(tt in 1:25){
   tile <- sprintf('%03d',tt)
   # for(ii in 1:6){
     system(paste('qsub -V -pe omp 4 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_002.sh ',tile,sep=''))    
   # }
+}
+
+# Climate
+setwd('/projectnb/modislc/users/mkmoon/TAscience/trend/data/runLogs/')
+for(vv in 1:10){
+  vari <- sprintf('%02d',vv)
+  system(paste('qsub -V -pe omp 2 -l h_rt=12:00:00 /usr3/graduate/mkmoon/GitHub/TAscience/trend/run_002_1.sh ',vari,sep=''))    
 }
 
 
